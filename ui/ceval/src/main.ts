@@ -10,6 +10,15 @@ export { ctrl, view, winningChances };
 // as the ctrl can be instantiated several times.
 // gotta do the click on the toggle to have it visually change.
 lichess.storage.make('ceval.disable').listen(_ => {
+  console.log('DEBUG: got disable');
+  lichess.tempStorage.set('ceval.enabled-after', '');
   const toggle = document.getElementById('analyse-toggle-ceval') as HTMLInputElement | undefined;
   if (toggle?.checked) toggle.click();
+});
+
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden) {
+    console.log('DEBUG: visibilitychange hidden');
+    lichess.tempStorage.set('ceval.enabled-after', '');
+  }
 });

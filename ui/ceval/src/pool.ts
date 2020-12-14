@@ -144,7 +144,11 @@ export class Pool {
   }
 
   start(work: Work): void {
-    lichess.storage.fire('ceval.disable'); // disable on all other tabs
+    // Notify all other tabs to disable ceval.
+    console.log('DEBUG: sending ceval.disable from pool');
+    lichess.storage.fire('ceval.disable');
+    if (!document.hidden) lichess.tempStorage.set('ceval.enabled-after', lichess.storage.get('ceval.disable')!);
+
     this.getWorker().then(function(worker) {
       worker.start(work);
     }).catch(function(error) {
